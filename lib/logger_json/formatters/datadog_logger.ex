@@ -11,23 +11,23 @@ defmodule LoggerJSON.Formatters.DatadogLogger do
 
   @processed_metadata_keys ~w[pid file line function module application]a
 
-  def format_event(level, msg, ts, md, md_keys) do
+  def format_event(level, message, timestamp, metadata, metadata_keys) do
     Map.merge(
       %{
         logger:
           json_map(
-            thread_name: inspect(Keyword.get(md, :pid)),
-            method_name: method_name(md)
+            thread_name: inspect(Keyword.get(metadata, :pid)),
+            method_name: method_name(metadata)
           ),
-        msg: "#{IO.chardata_to_string(msg)}",
+        msg: "#{IO.chardata_to_string(message)}",
         syslog:
           json_map(
             hostname: node_hostname(),
             severity: Atom.to_string(level),
-            timestamp: FormatterUtils.format_timestamp(ts)
+            timestamp: FormatterUtils.format_timestamp(timestamp)
           )
       },
-      format_metadata(md, md_keys)
+      format_metadata(metadata, metadata_keys)
     )
   end
 
