@@ -11,21 +11,23 @@ defmodule LoggerJSON.Formatters.DatadogLogger do
 
   @processed_metadata_keys ~w[pid file line function module application]a
 
-  def format_event(level, msg, ts, md, md_keys) do
+  def format_event(level, message, timestamp, metadata, metadata_keys) do
     Map.merge(
       %{
-        logger: json_map(
-          thread_name: inspect(Keyword.get(md, :pid)),
-          method_name: method_name(md)
-        ),
-        message: IO.chardata_to_string(msg),
-        syslog: json_map(
-          hostname: node_hostname(),
-          severity: Atom.to_string(level),
-          timestamp: FormatterUtils.format_timestamp(ts)
-        )
+        logger:
+          json_map(
+            thread_name: inspect(Keyword.get(metadata, :pid)),
+            method_name: method_name(metadata)
+          ),
+        msg: "#{IO.chardata_to_string(message)}",
+        syslog:
+          json_map(
+            hostname: node_hostname(),
+            severity: Atom.to_string(level),
+            timestamp: FormatterUtils.format_timestamp(timestamp)
+          )
       },
-      format_metadata(md, md_keys)
+      format_metadata(metadata, metadata_keys)
     )
   end
 
@@ -37,17 +39,18 @@ defmodule LoggerJSON.Formatters.DatadogLogger do
 
   defp format_error(md) do
     with %{reason: reason} <- FormatterUtils.format_process_crash(md) do
-      json_map(
-        stack: reason
-      )
+      json_map(stack: reason)
     end
   end
 
   defp method_name(metadata) do
     function = Keyword.get(metadata, :function)
     module = Keyword.get(metadata, :module)
+    line = Keyword.get(metadata, :line)
 
-    FormatterUtils.format_function(module, function)
+    [_ | last_module] = String.split("#{module}", ".")
+
+    "#{last_module}.#{function}::#{line}"
   end
 
   defp node_hostname do
