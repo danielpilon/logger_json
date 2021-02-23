@@ -19,6 +19,7 @@ defmodule LoggerJSON.Formatters.DatadogLogger do
             thread_name: inspect(Keyword.get(metadata, :pid)),
             method_name: method_name(metadata)
           ),
+        request_id: Keyword.get(metadata, :request_id),
         msg: "#{IO.chardata_to_string(message)}",
         syslog:
           json_map(
