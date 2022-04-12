@@ -1,5 +1,10 @@
 # LoggerJSON
 
+# Warning: this project has been deprecated
+
+If you're using this project as a dependency, we recommend using the public version of [logger_json](https://github.com/Nebo15/logger_json).
+The latest of the public version has every change that was needed on this fork, thus it's not necessary to maintain it anymore.
+
 [![Hex.pm Downloads](https://img.shields.io/hexpm/dw/logger_json.svg?maxAge=3600)](https://hex.pm/packages/logger_json) [![Latest Version](https://img.shields.io/hexpm/v/logger_json.svg?maxAge=3600)](https://hex.pm/packages/logger_json) [![License](https://img.shields.io/hexpm/l/logger_json.svg?maxAge=3600)](https://hex.pm/packages/logger_json) [![Build Status](https://travis-ci.org/Nebo15/logger_json.svg?branch=master)](https://travis-ci.org/Nebo15/logger_json) [![Coverage Status](https://coveralls.io/repos/github/Nebo15/logger_json/badge.svg?branch=master)](https://coveralls.io/github/Nebo15/logger_json?branch=master) [![SourceLevel](https://app.sourcelevel.io/github/Nebo15/logger_json.svg)](https://app.sourcelevel.io/github/Nebo15/logger_json)
 
 JSON console back-end for Elixir Logger.
